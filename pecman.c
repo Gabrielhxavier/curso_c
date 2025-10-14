@@ -40,5 +40,5 @@ int main() {
 
     fclose(f);                                  // realizando o fechamento do arquivo
 
-    return 0;
+    return 0;   
 }
