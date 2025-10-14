@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main() {
+char** mapa;                           // declarando uma matriz como ponteiro de ponteiro para alocar sua memoria dinamicamente
+int linhas;
+int colunas;
 
-    char mapa[5][11];                           // declarando uma matriz
+int main() {
 
     FILE* f;                                    //  declarando o tipo da variável como file (ponteiro) para abrir o arquivo
     
@@ -13,19 +15,30 @@ int main() {
         exit(1);
         
     }
-    for (int i=0; i < 5; i++){
-        fscanf(f, "%s", mapa[i]);
     
+    fscanf(f,"%d %d", &linhas, &colunas);
+
+    mapa =  malloc(sizeof(char *)*linhas);
+    for (int i=0; i< linhas; i++){
+        mapa[i] = malloc(sizeof(char)*(colunas+1));
+    }
+
+    for (int i=0; i < linhas; i++){
+        fscanf(f,"%s",mapa[i]);
     }
     
-    fclose(f);                                  // realizando o fechamento do arquivo
-
-    for (int i = 0; i < 5; i++)
-    {
-        printf("%s", mapa[i]);
+    for (int i=0; i < linhas; i++){
+        printf("%s",mapa[i]);
         printf("\n");
     }
-    
+
+    for (int i = 0; i < linhas; i++)
+    {
+        free(mapa[i]);
+    }
+    free(mapa);    
+
+    fclose(f);                                  // realizando o fechamento do arquivo
 
     return 0;
 }
