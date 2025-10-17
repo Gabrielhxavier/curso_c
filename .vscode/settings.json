@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "mapa.h": "c",
+        "pecman.h": "c",
+        "stdio.h": "c"
+    }
+}

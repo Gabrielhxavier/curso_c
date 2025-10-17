@@ -10,35 +10,52 @@ int acabou(){
     return 0;
 }
 
+int ehvalido(char direcao){
+    if(direcao == 'a' || direcao == 's' || direcao == 'd' || direcao == 'w'){
+        return  1;
+    }
+    else{
+        return 0;
+    }
+}
+
 void move(char direcao){
     // fazendo o herói andar (w - sobe,a - esquerda,s - desce,d - direita)
-    m.matriz[heroi.x][heroi.y] = '.';
+    if( !ehvalido(direcao) ){
+        return;
+    }
+
+    int proximox, proximoy;
+
+    proximox = heroi.x;
+    proximoy = heroi.y;
+
 
     switch (direcao)
     {
     case 'a':
-        m.matriz[heroi.x][heroi.y-1] = '@';
-        heroi.y--;
+        proximoy--;
         break;
        
     case 'd':
-        m.matriz[heroi.x][heroi.y+1] = '@';
-        heroi.y++;
+        proximoy++;
         break;
 
     case 'w':
-        m.matriz[heroi.x-1][heroi.y] = '@';
-        heroi.x--;
+        proximox--;
         break;
 
     case 's':
-        m.matriz[heroi.x+1][heroi.y] = '@';
-        heroi.x++;
+        proximox++;
         break;
     }
 
-    // tirando o herói da antiga posição
-    
+    if(!podeandarnomapa(&m, proximox, proximoy)){
+        return;
+    }
+ 
+    andanomapa(&m, &heroi.x, &heroi.y, &proximox, &proximoy, '@');
+
 }
 
 int main() {

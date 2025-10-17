@@ -20,3 +20,5 @@ void lemapa();
 void alocamapa();
 void imprimemapa();
 void encontraheroi(POSICAO* p, MAPA* m, char c);
+int podeandarnomapa(MAPA* m, int x, int y);
+void andanomapa(MAPA* m, int* origemx, int* origemy, int* destinox, int* destinoy, char heroi);

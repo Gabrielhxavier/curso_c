@@ -2,6 +2,28 @@
 #include <stdlib.h>
 #include "mapa.h"
 
+void andanomapa(MAPA* m, int* origemx, int* origemy, int* destinox, int *destinoy, char heroi){
+    m->matriz[*destinox][*destinoy] = heroi;
+    m->matriz[*origemx][*origemy] = '.';
+
+    *origemx = *destinox;
+    *origemy = *destinoy;
+
+}
+
+int podeandarnomapa(MAPA* m, int x, int y){
+    if (x >= m->linhas)
+        return 0;
+
+    if (y >= m->colunas)
+        return 0;
+
+    if (m->matriz[x][y] != '.')
+        return 0;
+
+    return 1;
+}
+
 void encontraheroi(POSICAO* p, MAPA* m, char c){
     for (int i = 0; i < m->linhas; i++)
     {
