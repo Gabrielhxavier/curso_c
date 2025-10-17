@@ -4,53 +4,48 @@
 #include "mapa.h"
 
 MAPA m;
+POSICAO heroi;
 
 int acabou(){
     return 0;
 }
 
 void move(char direcao){
-    // localizar o herói no mapa
-    int x, y;                                   // variáveis que vão armazenar a posição atual do herói
-    for (int i = 0; i < m.linhas; i++)
-    {
-        for (int j = 0; j < m.colunas; j++)
-        {
-            if (m.matriz[i][j] == '@')
-            {
-                x = i;
-                y = j;
-            }
-        }  
-    }
-
     // fazendo o herói andar (w - sobe,a - esquerda,s - desce,d - direita)
+    m.matriz[heroi.x][heroi.y] = '.';
+
     switch (direcao)
     {
     case 'a':
-        m.matriz[x][y-1] = '@';
+        m.matriz[heroi.x][heroi.y-1] = '@';
+        heroi.y--;
         break;
        
     case 'd':
-        m.matriz[x][y+1] = '@';
+        m.matriz[heroi.x][heroi.y+1] = '@';
+        heroi.y++;
         break;
 
     case 'w':
-        m.matriz[x-1][y] = '@';
+        m.matriz[heroi.x-1][heroi.y] = '@';
+        heroi.x--;
         break;
 
     case 's':
-        m.matriz[x+1][y] = '@';
+        m.matriz[heroi.x+1][heroi.y] = '@';
+        heroi.x++;
         break;
     }
 
     // tirando o herói da antiga posição
-    m.matriz[x][y] = '.';
+    
 }
 
 int main() {
 
     lemapa(&m);
+
+    encontraheroi(&heroi, &m, '@');
 
     do {
         imprimemapa(&m);                      // função para imprimir o mapa no loop

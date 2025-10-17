@@ -2,6 +2,20 @@
 #include <stdlib.h>
 #include "mapa.h"
 
+void encontraheroi(POSICAO* p, MAPA* m, char c){
+    for (int i = 0; i < m->linhas; i++)
+    {
+        for (int j = 0; j < m->colunas; j++)
+        {
+            if (m->matriz[i][j] == '@')
+            {
+                p-> x = i;
+                p-> y = j;
+            }
+        }  
+    }
+}
+
 void liberamapa(MAPA* m){
     for (int i = 0; i < m->linhas; i++)
     {
