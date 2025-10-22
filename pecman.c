@@ -2,16 +2,66 @@
 #include <stdlib.h>
 #include "pecman.h"
 #include "mapa.h"
+#include <string.h>
+#include <time.h>
+
 
 MAPA m;
 POSICAO heroi;
+MAPA copia;
+
+int destinofantasma(int xatual, int yatual, int* xdestino, int* ydestino){
+
+    int direcaofantasma;
+    direcaofantasma  = rand() % 4;
+
+    int opcoes[4][2] = {{xatual, yatual+1},
+                        {xatual+1, yatual},
+                        {xatual, yatual-1},
+                        {xatual-1, yatual}
+                        };
+
+    srand(time(0));
+    for (int i = 0; i < 10; i++)
+    {
+        if (podeandarnomapa(&m,  opcoes[direcaofantasma][0], opcoes[direcaofantasma][1])){
+            *xdestino = opcoes[direcaofantasma][0];
+            *ydestino = opcoes[direcaofantasma][1];
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void fantasma(){
+
+    copiamapa(&m, &copia);
+
+    for (int i = 0; i < m.linhas; i++)
+    {
+        for (int j = 0; j < m.colunas; j++)
+        {
+            if (copia.matriz[i][j]  ==  FANTASMA)
+            {
+                int xdestino;
+                int ydestino;
+                int vaiandar =  destinofantasma(i,j,&xdestino, &ydestino);
+
+                if(vaiandar == 1){
+                    andanomapafantasma(&m, i, j, xdestino, ydestino, FANTASMA);
+                }
+            }
+        }
+    }
+    liberamapa(&copia);
+}
 
 int acabou(){
     return 0;
 }
 
 int ehvalido(char direcao){
-    if(direcao == 'a' || direcao == 's' || direcao == 'd' || direcao == 'w'){
+    if(direcao == ESQUERDA || direcao == BAIXO || direcao == DIREITA || direcao == CIMA){
         return  1;
     }
     else{
@@ -33,19 +83,19 @@ void move(char direcao){
 
     switch (direcao)
     {
-    case 'a':
+    case ESQUERDA:
         proximoy--;
         break;
        
-    case 'd':
+    case DIREITA:
         proximoy++;
         break;
 
-    case 'w':
+    case CIMA:
         proximox--;
         break;
 
-    case 's':
+    case BAIXO:
         proximox++;
         break;
     }
@@ -54,7 +104,7 @@ void move(char direcao){
         return;
     }
  
-    andanomapa(&m, &heroi.x, &heroi.y, &proximox, &proximoy, '@');
+    andanomapa(&m, &heroi.x, &heroi.y, &proximox, &proximoy, HEROI);
 
 }
 
@@ -62,7 +112,7 @@ int main() {
 
     lemapa(&m);
 
-    encontraheroi(&heroi, &m, '@');
+    encontraheroi(&heroi, &m, HEROI);
 
     do {
         imprimemapa(&m);                      // função para imprimir o mapa no loop
@@ -71,7 +121,9 @@ int main() {
 
         scanf(" %c", &direcao); 
         
-        move(direcao);                      // função para mover o herói de acordo com a direção passada
+        move(direcao);
+
+        fantasma();
 
     } 
     while(!acabou());

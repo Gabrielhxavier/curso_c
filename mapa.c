@@ -1,10 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mapa.h"
+#include "pecman.h"
+#include <string.h>
+
+void copiamapa(MAPA* original, MAPA* copia){
+    copia->linhas = original->linhas;
+    copia->colunas = original->colunas;
+
+    alocamapa(copia);
+
+    for (int i = 0; i < copia->linhas; i++)
+    {
+        strcpy(copia->matriz[i], original->matriz[i]);
+    }
+}
+
+void andanomapafantasma(MAPA* m, int origemx, int origemy, int destinox, int destinoy, char heroi){
+    m->matriz[destinox][destinoy] = heroi;
+    m->matriz[origemx][origemy] = VAZIO;
+}
 
 void andanomapa(MAPA* m, int* origemx, int* origemy, int* destinox, int *destinoy, char heroi){
     m->matriz[*destinox][*destinoy] = heroi;
-    m->matriz[*origemx][*origemy] = '.';
+    m->matriz[*origemx][*origemy] = VAZIO;
 
     *origemx = *destinox;
     *origemy = *destinoy;
@@ -18,7 +37,7 @@ int podeandarnomapa(MAPA* m, int x, int y){
     if (y >= m->colunas)
         return 0;
 
-    if (m->matriz[x][y] != '.')
+    if (m->matriz[x][y] != VAZIO)
         return 0;
 
     return 1;
@@ -29,7 +48,7 @@ void encontraheroi(POSICAO* p, MAPA* m, char c){
     {
         for (int j = 0; j < m->colunas; j++)
         {
-            if (m->matriz[i][j] == '@')
+            if (m->matriz[i][j] == HEROI)
             {
                 p-> x = i;
                 p-> y = j;
