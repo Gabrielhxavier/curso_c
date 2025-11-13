@@ -30,20 +30,37 @@ void andanomapa(MAPA* m, int* origemx, int* origemy, int* destinox, int *destino
 
 }
 
-int podeandarnomapa(MAPA* m, int x, int y){
+int ehparede(MAPA* m, int x, int y){
+    if(m->matriz[x][y] == BORDAH || m->matriz[x][y] == BORDAV){
+        return 1;
+    }
+return 0;
+}
+
+int ehpersonagem(MAPA* m, int x, int y, char personagem){
+    if(m->matriz[x][y] == personagem){
+        return 1;
+    }
+return 0;
+}
+
+int podeandarnomapa(MAPA* m, int x, int y, char personagem){
     if (x >= m->linhas)
         return 0;
 
     if (y >= m->colunas)
         return 0;
 
-    if (m->matriz[x][y] != VAZIO)
+    if (ehparede(m,x,y))
+        return 0;
+
+    if (ehpersonagem(m,x,y,personagem))
         return 0;
 
     return 1;
 }
 
-void encontraheroi(POSICAO* p, MAPA* m, char c){
+int encontraheroi(POSICAO* p, MAPA* m, char c){
     for (int i = 0; i < m->linhas; i++)
     {
         for (int j = 0; j < m->colunas; j++)
@@ -52,9 +69,11 @@ void encontraheroi(POSICAO* p, MAPA* m, char c){
             {
                 p-> x = i;
                 p-> y = j;
+                return 1;
             }
         }  
     }
+    return 0;
 }
 
 void liberamapa(MAPA* m){

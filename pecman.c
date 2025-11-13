@@ -24,7 +24,7 @@ int destinofantasma(int xatual, int yatual, int* xdestino, int* ydestino){
     srand(time(0));
     for (int i = 0; i < 10; i++)
     {
-        if (podeandarnomapa(&m,  opcoes[direcaofantasma][0], opcoes[direcaofantasma][1])){
+        if (podeandarnomapa(&m,  opcoes[direcaofantasma][0], opcoes[direcaofantasma][1], FANTASMA)){
             *xdestino = opcoes[direcaofantasma][0];
             *ydestino = opcoes[direcaofantasma][1];
             return 1;
@@ -57,7 +57,13 @@ void fantasma(){
 }
 
 int acabou(){
-    return 0;
+    int encontrou = encontraheroi(&heroi, &m, HEROI);
+    if (!encontrou)
+    {
+        return 1;
+    }
+
+return 0;
 }
 
 int ehvalido(char direcao){
@@ -100,7 +106,7 @@ void move(char direcao){
         break;
     }
 
-    if(!podeandarnomapa(&m, proximox, proximoy)){
+    if(!podeandarnomapa(&m, proximox, proximoy, HEROI)){
         return;
     }
  
